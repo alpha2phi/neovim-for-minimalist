@@ -1,2 +1,3 @@
 # neovim-for-minimalist
-A minimal Neovim configuration,
+
+A minimal Neovim configuration.
