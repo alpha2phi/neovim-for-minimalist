@@ -1,5 +1,11 @@
--- Indicate first time installation
-local packer_bootstrap = false
+local api = vim.api
+local g = vim.g
+local opt = vim.opt
+local cmd = vim.cmd
+local fn = vim.fn
+local keymap = vim.keymap.set
+
+local packer_bootstrap = false -- Indicate first time installation
 
 -- packer.nvim configuration
 local conf = {
@@ -15,10 +21,8 @@ local conf = {
 	},
 }
 
--- Check if packer.nvim is installed
--- Run PackerCompile if there are changes in this file
 local function packer_init()
-	local fn = vim.fn
+	-- Check if packer.nvim is installed
 	local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 	if fn.empty(fn.glob(install_path)) > 0 then
 		packer_bootstrap = fn.system({
@@ -29,21 +33,26 @@ local function packer_init()
 			"https://github.com/wbthomason/packer.nvim",
 			install_path,
 		})
-		vim.cmd([[packadd packer.nvim]])
+		cmd([[packadd packer.nvim]])
 	end
 
-	local packerGrp = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
-	vim.api.nvim_create_autocmd(
+	-- Run PackerCompile if there are changes in this file
+	local packerGrp = api.nvim_create_augroup("packer_user_config", { clear = true })
+	api.nvim_create_autocmd(
 		{ "BufWritePost" },
-		{ pattern = "plugins.lua", command = "source <afile> | PackerCompile", group = packerGrp }
+		{ pattern = "init.lua", command = "source <afile> | PackerCompile", group = packerGrp }
 	)
 end
 
 -- Plugins
 local function plugins(use)
 	use({ "wbthomason/packer.nvim" })
-
-	use({ "echasnovski/mini.nvim" })
+	use({
+		"echasnovski/mini.nvim",
+		config = function()
+			require("config.starter").setup()
+		end,
+	})
 
 	-- Bootstrap Neovim
 	if packer_bootstrap then
@@ -52,9 +61,50 @@ local function plugins(use)
 	end
 end
 
--- Init and start packer
+-- Options
+local function options()
+	opt.hlsearch = false
+	opt.number = true
+	opt.relativenumber = true
+	opt.hidden = true
+	opt.mouse = "a"
+	opt.breakindent = true
+	opt.undofile = true
+	opt.ignorecase = true
+	opt.smartcase = true
+	opt.updatetime = 250
+	opt.signcolumn = "yes"
+	opt.termguicolors = true
+
+	-- Space as leader key
+	keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
+	g.mapleader = " "
+	g.maplocalleader = " "
+
+	-- Word wrap
+	keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
+	keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
+
+	-- jk to ESC
+	keymap("i", "jk", "<ESC>", { noremap = true, silent = true })
+
+	-- Highlight on yank
+	api.nvim_exec(
+		[[
+  augroup YankHighlight
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+  augroup end
+]],
+		false
+	)
+end
+
+-- packer.nvim
 packer_init()
 local packer = require("packer")
-
 packer.init(conf)
 packer.startup(plugins)
+
+-- Editor options
+options()
