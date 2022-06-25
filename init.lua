@@ -1,9 +1,6 @@
-local api = vim.api
-local g = vim.g
-local opt = vim.opt
 local cmd = vim.cmd
 local fn = vim.fn
-local keymap = vim.keymap.set
+local api = vim.api
 
 local packer_bootstrap = false -- Indicate first time installation
 
@@ -50,7 +47,7 @@ local function plugins(use)
 	use({
 		"echasnovski/mini.nvim",
 		config = function()
-			require("config.starter").setup()
+			require("config.mini.starter").setup()
 		end,
 	})
 
@@ -61,50 +58,8 @@ local function plugins(use)
 	end
 end
 
--- Options
-local function options()
-	opt.hlsearch = false
-	opt.number = true
-	opt.relativenumber = true
-	opt.hidden = true
-	opt.mouse = "a"
-	opt.breakindent = true
-	opt.undofile = true
-	opt.ignorecase = true
-	opt.smartcase = true
-	opt.updatetime = 250
-	opt.signcolumn = "yes"
-	opt.termguicolors = true
-
-	-- Space as leader key
-	keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
-	g.mapleader = " "
-	g.maplocalleader = " "
-
-	-- Word wrap
-	keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
-	keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
-
-	-- jk to ESC
-	keymap("i", "jk", "<ESC>", { noremap = true, silent = true })
-
-	-- Highlight on yank
-	api.nvim_exec(
-		[[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  augroup end
-]],
-		false
-	)
-end
-
 -- packer.nvim
 packer_init()
 local packer = require("packer")
 packer.init(conf)
 packer.startup(plugins)
-
--- Editor options
-options()
