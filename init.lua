@@ -47,7 +47,12 @@ local function plugins(use)
 	use({
 		"echasnovski/mini.nvim",
 		config = function()
-			require("config.mini.starter").setup()
+			require("config.mini.base16")
+			require("config.mini.starter")
+			require("config.mini.statusline")
+			require("config.mini.comment")
+			require("config.mini.surround")
+			require("config.mini.tabline")
 		end,
 	})
 
