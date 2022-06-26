@@ -46,9 +46,13 @@ local function plugins(use)
 	use({ "wbthomason/packer.nvim" })
 	use({ "kyazdani42/nvim-web-devicons" })
 	use({ "nvim-lua/plenary.nvim" })
-	use({ "TimUntersberger/neogit", cmd = { "Neogit" } , config = function()
-	  require("neogit").setup{}
-	end})
+	use({
+		"TimUntersberger/neogit",
+		cmd = { "Neogit" },
+		config = function()
+			require("neogit").setup({})
+		end,
+	})
 	use({
 		"echasnovski/mini.nvim",
 		config = function()
