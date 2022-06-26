@@ -1,10 +1,11 @@
 -- local palette = require("mini.base16").mini_palette("#112641", "#e2e98f", 75)
 --
 -- require("mini.base16").setup({
--- 	palette = palette,
--- 	name = "minischeme",
--- 	use_cterm = true,
+--  palette = palette,
+--  name = "minischeme",
+--  use_cterm = true,
 -- })
+
 require("mini.base16").setup({
 	palette = {
 		base00 = "#2b3339",
