@@ -62,6 +62,7 @@ local function plugins(use)
 			require("config.mini.comment")
 			require("config.mini.surround")
 			require("config.mini.tabline")
+			require("config.mini.jump")
 			require("config.mini.completion")
 		end,
 	})
