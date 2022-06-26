@@ -55,9 +55,9 @@ local function plugins(use)
 	})
 	use({
 		"echasnovski/mini.nvim",
-		config = function() 
-require("config.mini")
-end,
+		config = function()
+			require("config.mini")
+		end,
 	})
 	use({
 		"williamboman/nvim-lsp-installer",
@@ -66,6 +66,7 @@ end,
 			require("config.lsp")
 		end,
 	})
+  
 	-- Bootstrap Neovim
 	if packer_bootstrap then
 		print("Restart Neovim required after installation!")
