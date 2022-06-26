@@ -1,0 +1,8 @@
+require("config.mini.base16")
+require("config.mini.starter")
+require("config.mini.statusline")
+require("config.mini.comment")
+require("config.mini.surround")
+require("config.mini.tabline")
+require("config.mini.jump")
+require("config.mini.completion")
