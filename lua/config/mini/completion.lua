@@ -1,1 +1,1 @@
-
+require('mini.completion').setup({})
