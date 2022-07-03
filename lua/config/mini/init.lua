@@ -1,5 +1,6 @@
 require("config.mini.base16")
 require("config.mini.starter")
+require("config.mini.cursorword")
 require("config.mini.statusline")
 require("config.mini.comment")
 require("config.mini.surround")
