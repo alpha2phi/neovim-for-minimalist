@@ -4,7 +4,7 @@ local keymap = vim.keymap.set
 -- Space as leader key
 keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 g.mapleader = " "
-g.maplocalleader = " "
+g.maplocalleader = ","
 
 -- Word wrap
 keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })

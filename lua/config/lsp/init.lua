@@ -4,7 +4,6 @@ local servers = {
 			Lua = {
 				runtime = {
 					version = "LuaJIT",
-					-- Setup your lua path
 					path = vim.split(package.path, ";"),
 				},
 				diagnostics = {
@@ -19,21 +18,30 @@ local servers = {
 	},
 }
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+local function keymappings()
+	print("Todo")
+end
+
 local function on_attach(client, bufnr)
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
 	vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
 
-	-- Configure key mappings
-	-- require("config.lsp.keymaps").setup(client, bufnr)
-
-	-- Configure highlighting
-	-- require("config.lsp.highlighter").setup(client)
-
-	-- tagfunc
 	if client.server_capabilities.definitionProvider then
 		vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
 	end
 end
+
+local opts = {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	flags = {
+		debounce_text_changes = 150,
+	},
+}
 
 -- nvim-lsp-installer must be set up before nvim-lspconfig
 require("nvim-lsp-installer").setup({
@@ -43,11 +51,6 @@ require("nvim-lsp-installer").setup({
 
 local lspconfig = require("lspconfig")
 for server_name, _ in pairs(servers) do
-	local opts = vim.tbl_deep_extend("force", options, servers[server_name] or {})
-
-	if server_name == "sumneko_lua" then
-		opts = require("lua-dev").setup({ lspconfig = opts })
-	end
-
-	lspconfig[server_name].setup(opts)
+	local extended_opts = vim.tbl_deep_extend("force", opts, servers[server_name] or {})
+	lspconfig[server_name].setup(extended_opts)
 end
