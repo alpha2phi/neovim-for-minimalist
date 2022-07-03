@@ -6,6 +6,7 @@ export NVIM_MINIMALIST
 rm -rf $NVIM_MINIMALIST
 
 mkdir -p $NVIM_MINIMALIST/share
+mkdir -p $NVIM_MINIMALIST/share/nvim/session
 mkdir -p $NVIM_MINIMALIST/nvim
 
 stow --restow --target=$NVIM_MINIMALIST/nvim .
