@@ -60,8 +60,9 @@ local function plugins(use)
 		end,
 	})
 	use({
-		"williamboman/nvim-lsp-installer",
 		"neovim/nvim-lspconfig",
+		event = "BufReadPre",
+		requires = { "williamboman/nvim-lsp-installer" },
 		config = function()
 			require("config.lsp")
 		end,
