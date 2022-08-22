@@ -2,6 +2,9 @@ local cmd = vim.cmd
 local fn = vim.fn
 local api = vim.api
 
+-- Global object
+_G.NVMM = {}
+
 local packer_bootstrap = false -- Indicate first time installation
 
 -- packer.nvim configuration
@@ -62,7 +65,16 @@ local function plugins(use)
   use({
     "neovim/nvim-lspconfig",
     event = "BufReadPre",
-    requires = { "williamboman/nvim-lsp-installer" },
+    requires = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      {
+        "L3MON4D3/LuaSnip",
+        config = function()
+          require("config.luasnip")
+        end,
+      },
+    },
     config = function()
       require("config.lsp")
     end,
