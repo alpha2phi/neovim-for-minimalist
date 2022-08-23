@@ -41,7 +41,7 @@ local function keymappings(_, bufnr)
   keymap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
   keymap("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   keymap("n", "gh", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  keymap("n", "gI", "<cmd>Telescope lsp_implementations<CR>", opts)
+  keymap("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   keymap("n", "gb", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 
   api.nvim_set_keymap("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { noremap = true, expr = true })
@@ -165,7 +165,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lsp_handlers()
 
-local opts = {
+local server_opts = {
   on_attach = on_attach,
   capabilities = capabilities,
   flags = {
@@ -173,14 +173,20 @@ local opts = {
   },
 }
 
--- nvim-lsp-installer must be set up before nvim-lspconfig
-require("nvim-lsp-installer").setup({
+require("mason").setup({})
+
+require("mason-lspconfig").setup({
   ensure_installed = vim.tbl_keys(servers),
   automatic_installation = false,
 })
 
 local lspconfig = require("lspconfig")
-for server_name, _ in pairs(servers) do
-  local extended_opts = vim.tbl_deep_extend("force", opts, servers[server_name] or {})
-  lspconfig[server_name].setup(extended_opts)
-end
+
+require("mason-lspconfig").setup_handlers({
+  function(server_name)
+    local extended_opts = vim.tbl_deep_extend("force", server_opts, servers[server_name] or {})
+    lspconfig[server_name].setup(extended_opts)
+  end,
+  -- You can set up other server specific config
+})
+
