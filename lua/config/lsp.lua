@@ -189,4 +189,3 @@ require("mason-lspconfig").setup_handlers({
   end,
   -- You can set up other server specific config
 })
-
