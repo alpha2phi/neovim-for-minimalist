@@ -70,11 +70,11 @@ end
 
 local function lsp_handlers()
   local diagnostics = {
-    Error = " ",
-    Hint = " ",
-    Information = " ",
-    Question = " ",
-    Warning = " ",
+    Error = "",
+    Hint = "",
+    Information = "",
+    Question = "",
+    Warning = "",
   }
   local signs = {
     { name = "DiagnosticSignError", text = diagnostics.Error },
