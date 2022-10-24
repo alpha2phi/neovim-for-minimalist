@@ -4,8 +4,15 @@ local api = vim.api
 ----------------- LSP servers --------------------------
 local servers = {
   pyright = {
-    analysis = {
-      typeCheckingMode = "off",
+    settings = {
+      python = {
+        analysis = {
+          typeCheckingMode = "off",
+          autoSearchPaths = true,
+          useLibraryCodeForTypes = true,
+          diagnosticMode = "workspace",
+        },
+      },
     },
   },
   sumneko_lua = {
